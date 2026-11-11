@@ -1,0 +1,12 @@
+# Local builds and Studio place files
+/build/
+*.rbxl
+*.rbxlx
+sourcemap.json
+rojo.debug.log
+
+# Tooling and operating system
+node_modules/
+.DS_Store
+Thumbs.db
+.vscode/
