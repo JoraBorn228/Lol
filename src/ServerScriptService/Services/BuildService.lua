@@ -27,8 +27,22 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 	local now = os.clock()
 	if now - (lastRequest[player] or -math.huge) < Config.RequestInterval then return false, "Слишком часто" end
 	lastRequest[player] = now
-	local ok, reason = validate(player, request)
-	return ok, reason
+	local ok, reason, cf = validate(player, request)
+	if not ok or not cf then return false, reason end
+	local folder = workspace:FindFirstChild("Buildings")
+	if not folder then folder = Instance.new("Folder"); folder.Name = "Buildings"; folder.Parent = workspace end
+	local count = 0
+	for _, object in folder:GetChildren() do
+		if object:GetAttribute("OwnerUserId") == player.UserId then count += 1 end
+	end
+	if count >= Config.MaxBuildingsPerPlayer then return false, "Лимит построек" end
+	local object = ReplicatedStorage.Assets[Catalog[request.templateId].TemplateName]:Clone()
+	object.CFrame = cf
+	object.Anchored = true
+	object:SetAttribute("OwnerUserId", player.UserId)
+	object:SetAttribute("TemplateId", request.templateId)
+	object.Parent = folder
+	return true, "Построено"
 end
 function BuildService.start()
 	if started then return end

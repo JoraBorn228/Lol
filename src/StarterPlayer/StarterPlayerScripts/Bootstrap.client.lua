@@ -14,3 +14,4 @@ while remotes:GetAttribute("ServerReady") ~= true and os.clock() < deadline do
 end
 assert(remotes:GetAttribute("ServerReady") == true, "Server readiness timed out")
 Logger.info("Client", "Bootstrap online.")
+require(script.Parent.Controllers.BuildingController).start()
