@@ -57,4 +57,9 @@ function Inventory.remove(player,id,amount)
  if typeof(id)~="string" then return false,"Некорректный ресурс" end
  return Inventory.transact(player,{[id]=-amount})
 end
+function Inventory.has(player,id,amount)
+ if typeof(id)~="string" or not Catalog[id] or typeof(amount)~="number" or amount~=amount or amount<0 or amount%1~=0 or amount>Config.MaxTransaction then return false end
+ Inventory.ensure(player)
+ return (states[player][id] or 0)>=amount
+end
 return Inventory
