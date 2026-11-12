@@ -26,3 +26,11 @@ Live sync не подтверждён: тестовое окно Studio откр
 
 - Исходное `Place1` не изменялось. Тестовая копия `INDUSTRIA.rbxlx` локальная и сообщает `persistedToCloud=false`.
 - Сборка или синхронизация не подтверждают запуск игры или работу мультиплеера.
+
+## CORE-001 — Bootstrap.server.lua
+
+`rojo build default.project.json --output build/INDUSTRIA.rbxlx` завершился успешно; проверочная сборка содержит `Bootstrap.server.lua`. Запуск игры не выполнялся, так как CORE-001 требует создания точки входа, а отдельная задача CORE-009 предназначена для запуска и проверки игры.
+
+## CORE-002 — Bootstrap.client.lua
+
+Статус: **REVIEW**. Проверочная сборка Rojo должна включать LocalScript из `StarterPlayerScripts`. Игровой запуск не выполнялся; он предусмотрен задачей CORE-009.

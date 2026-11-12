@@ -1,6 +1,6 @@
 # PROJECT: INDUSTRIA
 
-**Статус:** Pre-production / Phase 0 на проверке владельца  
+**Статус:** Phase 1 — Core Foundation; CORE-002 ожидает проверки владельца. PRE-016 Rojo live-sync остаётся открытой.  
 **Платформа:** Roblox  
 **Движок и язык:** Roblox Studio / Luau  
 **Цель первой версии:** кооперативная factory automation sandbox для 4–6 игроков.

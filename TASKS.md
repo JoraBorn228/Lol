@@ -1,6 +1,6 @@
 # TASKS — PROJECT: INDUSTRIA
 
-Статус REVIEW означает, что работа выполнена и ожидает проверки владельца. Ни одна задача не отмечается APPROVED без его решения. Этапы после Phase 0 заблокированы до принятия всех задач Phase 0.
+Статус REVIEW означает, что работа выполнена и ожидает проверки владельца. Ни одна задача не отмечается APPROVED без его решения. Владелец разрешил перейти к Phase 1 после отправки начального Phase 0 коммита; PRE-016 остаётся открытой до подключения Rojo.
 
 ## Статусы
 
@@ -32,8 +32,8 @@
 - [ ] **PRE-016** — Проверить синхронизацию Rojo. — `IN_PROGRESS`
 ## PHASE 1 — CORE FOUNDATION
 
-- [ ] **CORE-001** — Создать Bootstrap.server.lua. — `LOCKED`
-- [ ] **CORE-002** — Создать Bootstrap.client.lua. — `LOCKED`
+- [ ] **CORE-001** — Создать Bootstrap.server.lua. — `REVIEW`
+- [ ] **CORE-002** — Создать Bootstrap.client.lua. — `REVIEW`
 - [ ] **CORE-003** — Создать конфигурацию GameConfig. — `LOCKED`
 - [ ] **CORE-004** — Создать систему логирования. — `LOCKED`
 - [ ] **CORE-005** — Создать базовую систему RemoteEvents. — `LOCKED`
