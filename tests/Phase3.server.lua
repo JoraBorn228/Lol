@@ -5,7 +5,10 @@ local grid = require(game.ReplicatedStorage.Shared.Util.GridUtils)
 local actual = game.Players:GetPlayers()[1]
 assert(actual and actual.Character, "Need one live character")
 local function actor(id)
-	return { UserId = id, Character = actual.Character, attributes = {}, SetAttribute = function(self, key, value) self.attributes[key] = value end }
+	local inventory=Instance.new("Folder")
+	return { UserId=id, Character=actual.Character, attributes={}, inventory=inventory,
+		FindFirstChild=function(_,name) if name=="Inventory" then return inventory end;return nil end,
+		SetAttribute=function(self,key,value) self.attributes[key]=value end }
 end
 local a, b = actor(-801), actor(-802)
 local checks = 0
@@ -46,5 +49,6 @@ local ok, failure = xpcall(function()
 	check(not service.handle(a, place(position)), "Rate limit rejects immediate request")
 end, debug.traceback)
 for _, object in created do if object.Parent then object:Destroy() end end
+a.inventory:Destroy();b.inventory:Destroy()
 assert(ok, failure)
 return {passed=checks, actors=2, realClients=1, limitation="Two actual clients still required for BUILD-019"}

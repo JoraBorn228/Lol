@@ -65,3 +65,16 @@ Live sync не подтверждён: тестовое окно Studio откр
 - PRE-016 Rojo live sync is still unverified. Final code was built with Rojo; client startup fix was transferred to the isolated Studio scene through MCP before tests.
 
 Phase 4: 18 inventory assertions passed in Studio Server (isolated Folder actor): additions/removals, atomicity, NaN/infinity/fractions, capacity, unknown IDs, isolated snapshots and construction debit/refund. Real client InventoryHUD loaded, IronOre=10 and ConstructionUnit=20 replicated. Creating synthetic Player was denied by Studio capability; test uses an isolated attribute-compatible Folder instead.
+
+## 2026-11-13 — Phase 5 production checks
+
+- Three deterministic recipes checked: IronPlate (2 IronOre -> 1, 2s), CopperWire (1 CopperOre -> 2, 2s), Concrete (3 Limestone -> 1, 3s).
+- tests/Phase5.server.lua: 36 assertions passed in Studio Server. Includes missing input, partial progress, pause/resume, exact consumption/yields, no free repeats, full output pause/resume, input capacity, atomic buffers, invalid dt, and full-inventory demolition refunds preserving both sides.
+- Real client loaded InventoryHUD and MachineHUD without project startup errors.
+- An initial live-session integration assertion used fixed starting stock while manual gameplay was also changing resources; this was not treated as a production failure. Repeated integration in a separate QA copy with known starting stock.
+- ExecuteMultiplayerTestAsync(2,{phase5=true}) returned passed=true, clients=2, inventory=true, production=true, ownership=true, duplicateCollect=true, refund=true. Each client placed a test machine, failed to load/remove the foreign machine, deposited 2 ore, collected exactly 1 plate, could not collect twice, and received construction cost back on demolition.
+- Temporary multiplayer harness scripts and result attributes were removed from the QA edit scene. Test files are outside src and excluded from normal builds.
+- Final regression in the Phase5 QA session: Phase3 server checks 19/19, Phase4 inventory 18/18, Phase5 production 36/36 (73 total). Phase3 synthetic actor fixture adapted to the unified inventory surface.
+- Manual owner checks: I opens inventory; B + click builds; approach test block and use E / proximity prompt; load one recipe batch, observe progress and output, collect, pause/resume, switch recipe only when empty. X demolition returns stored input/output and construction resources if capacity permits.
+- Session-only data; persistence, electricity, conveyors and dedicated machine models belong to later phases. A single heartbeat dispatcher drives production; catch-up is capped at one second per tick and one cycle per step. No offline production.
+- Studio plugin asset-type warnings persist for rbxassetid://203785492. Project startup and automated checks passed. Rojo live-sync PRE-016 remains unverified; build and Studio test access work.
