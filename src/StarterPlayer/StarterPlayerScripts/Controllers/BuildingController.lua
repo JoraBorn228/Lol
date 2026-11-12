@@ -17,6 +17,8 @@ local candidate: CFrame? = nil
 local valid = false
 local selected = "TestMachine"
 local status: TextLabel? = nil
+local feedback = ""
+local feedbackUntil = 0
 local function setActive(value: boolean)
 	active = value
 	candidate = nil
@@ -52,6 +54,10 @@ function Controller.start()
 	label.TextSize = 18
 	label.Parent = gui
 	status = label
+	ReplicatedStorage.Remotes.BuildResult.OnClientEvent:Connect(function(_, reason)
+		feedback = tostring(reason)
+		feedbackUntil = os.clock() + 2
+	end)
 	UserInputService.InputBegan:Connect(function(input, processed)
 		if processed or not active or not valid or not candidate then return end
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -105,7 +111,8 @@ function Controller.start()
 			and Geometry.inBounds(candidate, Catalog[selected].Size) and Geometry.isClear(candidate, Catalog[selected].Size)
 		preview.Color = valid and Config.ValidColor or Config.InvalidColor
 		if status then
-			status.Text = (valid and "Можно поставить" or "Недопустимое место") .. " · R — поворот · клик — поставить · X — демонтаж · B — выход"
+			local units = Players.LocalPlayer:GetAttribute("ConstructionUnits") or 0
+			status.Text = (os.clock() < feedbackUntil and feedback or (valid and "Можно поставить" or "Недопустимое место")) .. " · Материалы: " .. tostring(units) .. "\nR — поворот · клик — поставить · X — демонтаж · B — выход"
 		end
 	end)
 end

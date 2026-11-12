@@ -6,6 +6,7 @@ local Config = require(ReplicatedStorage.Shared.Config.BuildingConfig)
 local Catalog = require(ReplicatedStorage.Shared.Config.BuildCatalog)
 local Grid = require(ReplicatedStorage.Shared.Util.GridUtils)
 local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
+local Budget = require(script.Parent.ConstructionBudget)
 local BuildService = {}
 local lastRequest: {[Player]: number} = {}
 local started = false
@@ -38,7 +39,9 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 			if object:GetAttribute("BuildId") == request.buildId then
 				if object:GetAttribute("OwnerUserId") ~= player.UserId then return false, "Чужая постройка" end
 				if (root.Position - object.Position).Magnitude > Config.MaxDistance then return false, "Слишком далеко" end
+				local paid = object:GetAttribute("PaidCost") or 0
 				object:Destroy()
+				Budget.refund(player, paid)
 				return true, "Демонтировано"
 			end
 		end
@@ -59,6 +62,9 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 	object:SetAttribute("OwnerUserId", player.UserId)
 	object:SetAttribute("TemplateId", request.templateId)
 	object:SetAttribute("BuildId", HttpService:GenerateGUID(false))
+	local cost = Catalog[request.templateId].Cost
+	if not Budget.spend(player, cost) then object:Destroy(); return false, "Недостаточно стройматериалов" end
+	object:SetAttribute("PaidCost", cost)
 	object.Parent = folder
 	return true, "Построено"
 end
@@ -69,6 +75,8 @@ function BuildService.start()
 		local ok, reason = BuildService.handle(player, request)
 		ReplicatedStorage.Remotes.BuildResult:FireClient(player, ok, reason)
 	end)
-	Players.PlayerRemoving:Connect(function(player) lastRequest[player] = nil end)
+	for _, player in Players:GetPlayers() do Budget.get(player) end
+	Players.PlayerAdded:Connect(function(player) Budget.get(player) end)
+	Players.PlayerRemoving:Connect(function(player) lastRequest[player] = nil; Budget.remove(player) end)
 end
 return BuildService
