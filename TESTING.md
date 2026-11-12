@@ -63,3 +63,5 @@ Live sync не подтверждён: тестовое окно Studio откр
 - Manual owner checks: B toggles mode; pointer follows ground; R rotates rectangular footprint; green/red preview agrees with allowed/blocked placement; click places; X removes; HUD reports cost/refund. Check touch controls separately; a full mobile build UI is outside this phase.
 - Construction budget is a session-only adapter starting at 20 units, not the Phase 4 item inventory. Buildings and budget are not persistent yet. Placement currently supports the flat Phase 1 foundation only, with no stacking or arbitrary terrain placement.
 - PRE-016 Rojo live sync is still unverified. Final code was built with Rojo; client startup fix was transferred to the isolated Studio scene through MCP before tests.
+
+Phase 4: 18 inventory assertions passed in Studio Server (isolated Folder actor): additions/removals, atomicity, NaN/infinity/fractions, capacity, unknown IDs, isolated snapshots and construction debit/refund. Real client InventoryHUD loaded, IronOre=10 and ConstructionUnit=20 replicated. Creating synthetic Player was denied by Studio capability; test uses an isolated attribute-compatible Folder instead.
