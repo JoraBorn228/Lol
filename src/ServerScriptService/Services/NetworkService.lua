@@ -17,7 +17,7 @@ function NetworkService.init()
 		event.Parent = folder
 	end
 	assert(event:IsA("RemoteEvent"), "ServerReady must be a RemoteEvent")
-	for _, name in { RemoteConfig.BuildRequest, RemoteConfig.BuildResult } do
+	for _, name in { RemoteConfig.BuildRequest, RemoteConfig.BuildResult, RemoteConfig.MachineRequest, RemoteConfig.MachineResult } do
 		local remote = folder:FindFirstChild(name)
 		if not remote then
 			remote = Instance.new("RemoteEvent")
