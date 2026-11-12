@@ -17,6 +17,15 @@ function NetworkService.init()
 		event.Parent = folder
 	end
 	assert(event:IsA("RemoteEvent"), "ServerReady must be a RemoteEvent")
+	for _, name in { RemoteConfig.BuildRequest, RemoteConfig.BuildResult } do
+		local remote = folder:FindFirstChild(name)
+		if not remote then
+			remote = Instance.new("RemoteEvent")
+			remote.Name = name
+			remote.Parent = folder
+		end
+		assert(remote:IsA("RemoteEvent"), name .. " must be RemoteEvent")
+	end
 	-- Persistent readiness avoids missed one-shot events when a client joins late.
 	folder:SetAttribute("ServerReady", true)
 end

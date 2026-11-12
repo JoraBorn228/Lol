@@ -52,6 +52,12 @@ function Controller.start()
 	label.TextSize = 18
 	label.Parent = gui
 	status = label
+	UserInputService.InputBegan:Connect(function(input, processed)
+		if processed or not active or not valid or not candidate then return end
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			ReplicatedStorage.Remotes.BuildRequest:FireServer({ action = "Place", templateId = selected, position = candidate.Position, turns = turns })
+		end
+	end)
 	setActive(false)
 	ContextActionService:BindAction("IndustriaBuildToggle", function(_, state)
 		if state == Enum.UserInputState.Begin and not UserInputService:GetFocusedTextBox() then setActive(not active) end
