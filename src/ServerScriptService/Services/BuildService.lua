@@ -1,5 +1,6 @@
 --!strict
 local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Config = require(ReplicatedStorage.Shared.Config.BuildingConfig)
 local Catalog = require(ReplicatedStorage.Shared.Config.BuildCatalog)
@@ -41,6 +42,7 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 	object.Anchored = true
 	object:SetAttribute("OwnerUserId", player.UserId)
 	object:SetAttribute("TemplateId", request.templateId)
+	object:SetAttribute("BuildId", HttpService:GenerateGUID(false))
 	object.Parent = folder
 	return true, "Построено"
 end
