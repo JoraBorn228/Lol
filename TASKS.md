@@ -74,18 +74,18 @@
 - [ ] **BUILD-019** — Проверить взаимодействие двух игроков. — `REVIEW`
 ## PHASE 4 — ITEMS AND INVENTORY
 
-- [ ] **ITEM-001** — Создать каталог ресурсов. — `LOCKED`
-- [ ] **ITEM-002** — Создать ItemConfig. — `LOCKED`
-- [ ] **ITEM-003** — Создать IronOre. — `LOCKED`
-- [ ] **ITEM-004** — Создать CopperOre. — `LOCKED`
-- [ ] **ITEM-005** — Создать Limestone. — `LOCKED`
-- [ ] **ITEM-006** — Создать Coal. — `LOCKED`
-- [ ] **ITEM-007** — Создать InventoryService. — `LOCKED`
-- [ ] **ITEM-008** — Реализовать добавление ресурсов. — `LOCKED`
-- [ ] **ITEM-009** — Реализовать удаление ресурсов. — `LOCKED`
-- [ ] **ITEM-010** — Реализовать проверку количества. — `LOCKED`
-- [ ] **ITEM-011** — Создать Inventory UI. — `LOCKED`
-- [ ] **ITEM-012** — Проверить корректность операций. — `LOCKED`
+- [ ] **ITEM-001** — Создать каталог ресурсов. — `REVIEW`
+- [ ] **ITEM-002** — Создать ItemConfig. — `REVIEW`
+- [ ] **ITEM-003** — Создать IronOre. — `REVIEW`
+- [ ] **ITEM-004** — Создать CopperOre. — `REVIEW`
+- [ ] **ITEM-005** — Создать Limestone. — `REVIEW`
+- [ ] **ITEM-006** — Создать Coal. — `REVIEW`
+- [ ] **ITEM-007** — Создать InventoryService. — `REVIEW`
+- [ ] **ITEM-008** — Реализовать добавление ресурсов. — `REVIEW`
+- [ ] **ITEM-009** — Реализовать удаление ресурсов. — `REVIEW`
+- [ ] **ITEM-010** — Реализовать проверку количества. — `REVIEW`
+- [ ] **ITEM-011** — Создать Inventory UI. — `REVIEW`
+- [ ] **ITEM-012** — Проверить корректность операций. — `REVIEW`
 ## PHASE 5 — PRODUCTION SYSTEM
 
 - [ ] **PROD-001** — Создать RecipeConfig. — `LOCKED`

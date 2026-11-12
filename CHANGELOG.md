@@ -37,3 +37,5 @@
 - BUILD-019: 19 server checks and actual two-client placement/ownership/refund test passed. Startup race fixed; temporary test scripts removed from Studio.
 - All BUILD tasks are REVIEW. Owner manual review remains pending. Materials use a temporary construction balance until Phase 4 inventory integration. Flat foundation only; persistence is planned later.
 - Phase 3 summary commit records completion; stop at phase boundary per working agreement. PRE-016 remains open independently.
+
+Phase 4 complete: ITEM-001–012 implemented and committed; authoritative session inventory, four raw resources, inventory HUD, construction adapter and 18 successful assertions. No persistence yet. Owner review pending.
