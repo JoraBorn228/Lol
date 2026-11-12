@@ -9,6 +9,7 @@ local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
 local Budget = require(script.Parent.ConstructionBudget)
 local MachineService = require(script.Parent.MachineService)
 local Asset=require(ReplicatedStorage.Shared.Util.MachineAsset)
+local Resources=require(script.Parent.ResourceService)
 local BuildService = {}
 local lastRequest: {[Player]: number} = {}
 local started = false
@@ -20,6 +21,7 @@ local function validate(player: Player, request: any): (boolean, string, CFrame?
 	local pos = request.position
 	if not Grid.isAligned(pos.X, Config.GridSize) or not Grid.isAligned(pos.Z, Config.GridSize) or math.abs(pos.Y - Config.GroundY - item.Size.Y / 2) > 0.001 then return false, "Требуется сетка" end
 	local character = player.Character
+	if request.templateId=="Extractor" and not Resources.findAt(pos) then return false,"Добытчик ставится в центре месторождения" end
 	local root = character and character:FindFirstChild("HumanoidRootPart")
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	if not root or not humanoid or humanoid.Health <= 0 or (root.Position - pos).Magnitude > Config.MaxDistance then return false, "Слишком далеко" end

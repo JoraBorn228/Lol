@@ -127,6 +127,13 @@ function Controller.start()
 		valid = root ~= nil and (root.Position - candidate.Position).Magnitude <= Config.MaxDistance
 			and Geometry.inBounds(candidate, Catalog[selected].Size) and Geometry.isClear(candidate, Catalog[selected].Size)
 		preview.Color = valid and Config.ValidColor or Config.InvalidColor
+		if selected=="Extractor" then
+			local nodes=map:FindFirstChild("ResourceNodes")
+			local onNode=false
+			if nodes then for _,node in nodes:GetChildren() do if Vector2.new(node.Position.X-candidate.X,node.Position.Z-candidate.Z).Magnitude<=1 then onNode=true;break end end end
+			valid=valid and onNode
+			preview.Color=valid and Config.ValidColor or Config.InvalidColor
+		end
 		if status then
 			local units = Players.LocalPlayer:GetAttribute("ConstructionUnits") or 0
 			status.Text = (os.clock() < feedbackUntil and feedback or (valid and "Можно поставить" or "Недопустимое место")) .. " · Материалы: " .. tostring(units) .. "\nR — поворот · клик — поставить · X — демонтаж · B — выход"

@@ -5,6 +5,7 @@ local State=require(script.Parent.MachineState)
 local Buffer=require(script.Parent.ItemBuffer)
 local Production=require(script.Parent.ProductionService)
 local Inventory=require(script.Parent.InventoryService)
+local Resources=require(script.Parent.ResourceService)
 local Recipes=require(ReplicatedStorage.Shared.Config.RecipeConfig)
 local Players=game:GetService("Players")
 local Service={}
@@ -15,6 +16,11 @@ function Service.attach(object)
  local config=Config[object:GetAttribute("TemplateId")]
  if not config or states[object] then return end
  states[object]=State.new(config)
+ states[object].requiresDeposit=config.RequiresDeposit==true
+ if config.RequiresDeposit then
+  states[object].resourceNode=Resources.findAt(object.Position)
+  object:SetAttribute("ResourceNodeId",states[object].resourceNode and states[object].resourceNode:GetAttribute("NodeId"))
+ end
  local prompt=Instance.new("ProximityPrompt");prompt.Name="MachinePrompt";prompt.ActionText="Управлять";prompt.ObjectText="Производство";prompt.MaxActivationDistance=16;prompt.RequiresLineOfSight=true;prompt.Parent=object
  Production.register(object,states[object])
 end
@@ -35,6 +41,7 @@ function Service.handle(player,request)
  if not root or not humanoid or humanoid.Health<=0 or (root.Position-object.Position).Magnitude>20 then return false,"Подойдите ближе" end
  local recipe=Recipes[state.recipeId]
  if request.action=="Deposit" then
+  if not recipe or next(recipe.Inputs)==nil then return false,"Эта машина не принимает сырьё вручную" end
   if not Buffer.canApply(state.input,recipe.Inputs) then return false,"Вход заполнен" end
   local delta={};for id,amount in recipe.Inputs do delta[id]=-amount end
   local ok,reason=Inventory.transact(player,delta)
@@ -52,6 +59,7 @@ function Service.handle(player,request)
  elseif request.action=="NextRecipe" then
   if state.progress>0 or Buffer.total(state.input)>0 or Buffer.total(state.output)>0 then return false,"Сначала опустошите машину" end
   local list=Config[object:GetAttribute("TemplateId")].Recipes
+  if #list==0 then return false,"Рецепты недоступны; энергетика появится в Phase 8" end
   local index=table.find(list,state.recipeId) or 1
   state.recipeId=list[index%#list+1];return true,"Рецепт изменён"
  end
