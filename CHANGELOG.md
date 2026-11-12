@@ -47,3 +47,5 @@ Phase 4 complete: ITEM-001–012 implemented and committed; authoritative sessio
 - Three recipes run on the existing TestMachine placeholder. Dedicated machine models remain Phase 6. Electricity is not required until its later phase.
 - 73 regression assertions passed plus actual two-client production/ownership/refund QA. No project startup errors observed. Owner review remains pending; no saving yet. PRE-016 remains open.
 - Both requested phases completed. Stop at the end of Phase 5; Phase 6 not started.
+
+2026-11-13: fixed inventory opening priority; added visible Inventory [I] and close buttons, verified real keyboard and mouse interactions in Studio.

@@ -78,3 +78,7 @@ Phase 4: 18 inventory assertions passed in Studio Server (isolated Folder actor)
 - Manual owner checks: I opens inventory; B + click builds; approach test block and use E / proximity prompt; load one recipe batch, observe progress and output, collect, pause/resume, switch recipe only when empty. X demolition returns stored input/output and construction resources if capacity permits.
 - Session-only data; persistence, electricity, conveyors and dedicated machine models belong to later phases. A single heartbeat dispatcher drives production; catch-up is capped at one second per tick and one cycle per step. No offline production.
 - Studio plugin asset-type warnings persist for rbxassetid://203785492. Project startup and automated checks passed. Rojo live-sync PRE-016 remains unverified; build and Studio test access work.
+
+## 2026-11-13 — inventory opening fix
+
+Reproduced InventoryHUD present but I not opening at default action priority 2000. Raised inventory binding to priority 3001; added permanent bottom-left Inventory [I] button and explicit close button, with DisplayOrder 20. Live QA controller updated through MCP and restarted. Verified I opens and closes, mouse down/up opens via InventoryToggle, close button hides the panel. Input checks wait 300–350 ms for delivery; initial immediate assertions raced with input processing. Chat text focus still passes through. Rojo build is separate from live sync; PRE-016 remains open.
