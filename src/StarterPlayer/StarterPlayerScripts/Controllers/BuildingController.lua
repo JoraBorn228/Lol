@@ -8,6 +8,7 @@ local Config = require(ReplicatedStorage.Shared.Config.BuildingConfig)
 local Grid = require(ReplicatedStorage.Shared.Util.GridUtils)
 local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
 local Catalog = require(ReplicatedStorage.Shared.Config.BuildCatalog)
+local Asset=require(ReplicatedStorage.Shared.Util.MachineAsset)
 local Controller = {}
 local active = false
 local started = false
@@ -16,6 +17,7 @@ local preview: BasePart? = nil
 local candidate: CFrame? = nil
 local valid = false
 local selected = "TestMachine"
+local choices={"TestMachine","Extractor","Smelter","Constructor","Assembler","Generator"}
 local status: TextLabel? = nil
 local feedback = ""
 local feedbackUntil = 0
@@ -32,6 +34,7 @@ local function setActive(value: boolean)
 		ghost.CanTouch = false
 		ghost.CanQuery = false
 		ghost.Transparency = 1
+		Asset.preview(ghost)
 		ghost.Parent = workspace
 		preview = ghost
 	end
@@ -54,6 +57,20 @@ function Controller.start()
 	label.TextSize = 18
 	label.Parent = gui
 	status = label
+	local selectButton=Instance.new("TextButton")
+	selectButton.Name="MachineSelector";selectButton.Size=UDim2.fromOffset(260,36);selectButton.Position=UDim2.new(0.5,-130,0,84);selectButton.Text="T — Тестовый блок";selectButton.Parent=gui
+	local function nextTemplate()
+		local index=table.find(choices,selected) or 1
+		selected=choices[index%#choices+1]
+		selectButton.Text="T — "..Catalog[selected].DisplayName
+		if active then setActive(true) end
+	end
+	selectButton.Activated:Connect(nextTemplate)
+	ContextActionService:BindAction("IndustriaNextMachine",function(_,state)
+		if UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+		if state==Enum.UserInputState.Begin then nextTemplate() end
+		return Enum.ContextActionResult.Sink
+	end,false,Enum.KeyCode.T)
 	ReplicatedStorage.Remotes.BuildResult.OnClientEvent:Connect(function(_, reason)
 		feedback = tostring(reason)
 		feedbackUntil = os.clock() + 2
@@ -100,11 +117,11 @@ function Controller.start()
 		local hit = workspace:Raycast(ray.Origin, ray.Direction * 1000, params)
 		candidate = nil
 		valid = false
-		preview.Transparency = 1
+		for _,part in {preview,table.unpack(preview:GetDescendants())} do if part:IsA("BasePart") then part.Transparency=1 end end
 		if not hit then return end
 		candidate = CFrame.new(Grid.snapPosition(hit.Position, Config.GridSize, Config.GroundY + Catalog[selected].Size.Y / 2)) * Grid.rotation(turns)
-		preview.CFrame = candidate
-		preview.Transparency = Config.PreviewTransparency
+		Asset.pivot(preview,candidate)
+		Asset.preview(preview)
 		local character = Players.LocalPlayer.Character
 		local root = character and character:FindFirstChild("HumanoidRootPart")
 		valid = root ~= nil and (root.Position - candidate.Position).Magnitude <= Config.MaxDistance

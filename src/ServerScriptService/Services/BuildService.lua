@@ -8,6 +8,7 @@ local Grid = require(ReplicatedStorage.Shared.Util.GridUtils)
 local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
 local Budget = require(script.Parent.ConstructionBudget)
 local MachineService = require(script.Parent.MachineService)
+local Asset=require(ReplicatedStorage.Shared.Util.MachineAsset)
 local BuildService = {}
 local lastRequest: {[Player]: number} = {}
 local started = false
@@ -59,7 +60,8 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 	end
 	if count >= Config.MaxBuildingsPerPlayer then return false, "Лимит построек" end
 	local object = ReplicatedStorage.Assets[Catalog[request.templateId].TemplateName]:Clone()
-	object.CFrame = cf
+	Asset.pivot(object,cf)
+	Asset.addPorts(object)
 	object.Anchored = true
 	object:SetAttribute("OwnerUserId", player.UserId)
 	object:SetAttribute("TemplateId", request.templateId)
