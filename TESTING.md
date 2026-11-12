@@ -82,3 +82,16 @@ Phase 4: 18 inventory assertions passed in Studio Server (isolated Folder actor)
 ## 2026-11-13 — inventory opening fix
 
 Reproduced InventoryHUD present but I not opening at default action priority 2000. Raised inventory binding to priority 3001; added permanent bottom-left Inventory [I] button and explicit close button, with DisplayOrder 20. Live QA controller updated through MCP and restarted. Verified I opens and closes, mouse down/up opens via InventoryToggle, close button hides the panel. Input checks wait 300–350 ms for delivery; initial immediate assertions raced with input processing. Chat text focus still passes through. Rojo build is separate from live sync; PRE-016 remains open.
+
+## 2026-11-13 — Phase 6 first machines
+
+- Created five original primitive-based industrial models in Blender 4.3.2 using the connected current MCP addon. Saved individual .blend libraries and shape specifications under assets/machines; matching text .rbxmx assets use anchored composite geometry and one collision footprint. Existing Blender scene objects were retained.
+- tests/Phase6.server.lua passed 387 assertions: five catalog footprints, rigid quarter-turn transforms, all decorative corners within collision bounds, nonphysical ghosts, Input/Output/Power attachments, recipe references/yields, finite extraction, exhausted/missing nodes and generator PowerPending.
+- Regression on Phase6 build passed: Phase3 19, Phase4 18, updated Phase5 71 assertions (495 total with Phase6). Phase5 tests now exclude input-free mining from ordinary recipe checks; mining has separate finite-node assertions.
+- tests/Phase6.integration.client.lua passed in actual Client Play: placed Extractor, Smelter, Constructor, Assembler and Generator via BuildRequest; collected at least two mined ore alongside starter stock; deposited six smelting batches; produced six ingots, four plates, two rods and one reinforced plate through validated MachineRequest remotes. Intermediate ingot/plate/rod balances ended at zero. Generator remained PowerPending.
+- Actual keyboard test: T selected Extractor, B created composite ghost, all ghost parts were noncollidable/nonqueryable; B exited. Visual screenshot inspected all five placed silhouettes in Studio. No project script startup errors observed; existing Studio-plugin asset-type warnings remain.
+- Iron nodes contain 1000 ore at X/Z (32,16) and (-32,16). Extractor must be centered on a node; full output does not deplete it. Ports are logical attachment locations; conveyors remain Phase 7 and electric network Phase 8.
+- TestMachine keeps a clearly named PrototypePlate recipe for old raw-ore regression scenarios. Real Constructor uses smelted ingots; Smelter and Assembler have distinct recipe lists.
+- Owner manual review: T/click selector, B build, R rotate, centered extractor placement, E machine interaction, recipe changes, status lamps, cost/refund and appearance. Production and resources remain session-only.
+- Blender export script initially hit a path-quoting syntax error before executing; corrected to forward-slash paths and confirmed each library written before its task commit.
+- PRE-016 Rojo live sync remains unverified. Rojo Phase6 build and actual Studio tests passed. Phase 7 was not started; stop after Phase 6 at explicit owner request.
