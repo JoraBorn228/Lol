@@ -16,6 +16,7 @@ function Service.attach(object)
  local config=Config[object:GetAttribute("TemplateId")]
  if not config or states[object] then return end
  states[object]=State.new(config)
+ states[object].kind=object:GetAttribute("TemplateId")
  states[object].requiresDeposit=config.RequiresDeposit==true
  if config.RequiresDeposit then
   states[object].resourceNode=Resources.findAt(object.Position)
@@ -23,6 +24,8 @@ function Service.attach(object)
  end
  local prompt=Instance.new("ProximityPrompt");prompt.Name="MachinePrompt";prompt.ActionText="Управлять";prompt.ObjectText="Производство";prompt.MaxActivationDistance=16;prompt.RequiresLineOfSight=true;prompt.Parent=object
  Production.register(object,states[object])
+ local display=Instance.new("BillboardGui");display.Name="MachineStatus";display.Size=UDim2.fromOffset(190,42);display.StudsOffset=Vector3.new(0,object.Size.Y/2+1,0);display.MaxDistance=60;display.AlwaysOnTop=true;display.Parent=object
+ local label=Instance.new("TextLabel");label.Name="Label";label.Size=UDim2.fromScale(1,1);label.TextSize=14;label.TextWrapped=true;label.BackgroundTransparency=0.3;label.TextColor3=Color3.new(1,1,1);label.Parent=display
 end
 function Service.get(object) return states[object] end
 function Service.handle(player,request)

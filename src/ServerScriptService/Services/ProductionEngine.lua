@@ -5,6 +5,7 @@ local Engine={}
 function Engine.step(state,dt)
  if typeof(dt)~="number" or dt~=dt or dt<0 or dt==math.huge then return end
  if not state.enabled then state.status="Disabled";return end
+ if state.kind=="Generator" then state.status="PowerPending";return end
  local recipe=Recipes[state.recipeId]
  if not recipe then state.status="NoRecipe";return end
  local extractionAmount=0

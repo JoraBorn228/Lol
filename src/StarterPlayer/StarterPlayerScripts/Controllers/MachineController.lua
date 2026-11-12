@@ -44,7 +44,7 @@ function Controller.start()
   local progress=selected:GetAttribute("ProductionProgress") or 0
   local percent=recipe and math.floor(progress/recipe.Duration*100) or 0
   local status=selected:GetAttribute("ProductionStatus") or "Загрузка"
-  local names={Working="Работает",WaitingInputs="Нет сырья",OutputFull="Выход заполнен",Disabled="Пауза",Completed="Цикл завершён"}
+  local names={Working="Работает",WaitingInputs="Нет сырья",OutputFull="Выход заполнен",Disabled="Пауза",Completed="Цикл завершён",NoDeposit="Нет месторождения",Exhausted="Месторождение исчерпано",PowerPending="Энергетика — Phase 8",NoRecipe="Нет рецепта"}
   label.Text=(recipe and recipe.Name or "Машина").." · "..percent.."%\n"..(names[status] or status).."\nВход: "..contents(selected:GetAttribute("InputItems")).."\nВыход: "..contents(selected:GetAttribute("OutputItems")).."\n"..feedback
  end)
 end

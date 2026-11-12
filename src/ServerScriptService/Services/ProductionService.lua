@@ -24,6 +24,18 @@ function Service.start()
    count+=1
    if count>Config.MaxMachines then break end
    Engine.step(state,elapsed)
+   if state.lastVisualStatus~=state.status then
+    state.lastVisualStatus=state.status
+    local lamp=object:FindFirstChild("StatusLamp")
+    if lamp and lamp:IsA("BasePart") then
+     lamp.Color=state.status=="Working" and Color3.fromRGB(70,220,110) or state.status=="OutputFull" and Color3.fromRGB(240,180,50) or Color3.fromRGB(140,145,150)
+     lamp.Material=state.status=="Working" and Enum.Material.Neon or Enum.Material.SmoothPlastic
+    end
+    local sign=object:FindFirstChild("MachineStatus")
+    local label=sign and sign:FindFirstChild("Label")
+    local names={Working="Работает",WaitingInputs="Нет сырья",OutputFull="Выход заполнен",Disabled="Пауза",Completed="Цикл завершён",NoDeposit="Нет месторождения",Exhausted="Исчерпано",PowerPending="Энергетика — Phase 8",NoRecipe="Нет рецепта"}
+    if label then label.Text=(object:GetAttribute("TemplateId") or object.Name).."\n"..(names[state.status] or state.status) end
+   end
    object:SetAttribute("ProductionStatus",state.status)
    object:SetAttribute("ProductionProgress",state.progress)
    object:SetAttribute("RecipeId",state.recipeId)
