@@ -10,4 +10,5 @@ Catalog.Concrete=table.freeze({Name="Бетон",Color=Color3.fromRGB(170,170,16
 Catalog.IronIngot=table.freeze({Name="Железный слиток",Color=Color3.fromRGB(155,165,180)})
 Catalog.CopperIngot=table.freeze({Name="Медный слиток",Color=Color3.fromRGB(215,125,70)})
 Catalog.IronRod=table.freeze({Name="Железный стержень",Color=Color3.fromRGB(150,160,175)})
+Catalog.ReinforcedPlate=table.freeze({Name="Усиленная пластина",Color=Color3.fromRGB(120,140,160)})
 return table.freeze(Catalog)
