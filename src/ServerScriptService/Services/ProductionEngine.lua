@@ -10,6 +10,7 @@ function Engine.step(state,dt)
  for id,amount in recipe.Inputs do
   if (state.input.items[id] or 0)<amount then state.status="WaitingInputs";return end
  end
+ if not Buffer.canApply(state.output,recipe.Outputs) then state.status="OutputFull";return end
  state.status="Working"
  state.progress=math.min(recipe.Duration,state.progress+dt)
  if state.progress<recipe.Duration then return end
