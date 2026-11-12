@@ -29,3 +29,11 @@
 - CORE-007/008: anchored 256-stud test ground and neutral enabled spawn.
 - CORE-009: real server/client Play checks passed; registration, live character, readiness and repeat remote setup verified. Bounded readiness wait fixes a possible client startup race.
 - All Phase 1 tasks remain REVIEW. PRE-016 remains open; no claim of completed Phase 0 or verified live sync.
+
+## 2026-11-12 — Phase 3 Building Foundation complete
+
+- Phase 2 skipped by direct owner instruction; default Roblox camera/controls retained.
+- BUILD-001…BUILD-018 implemented as separate commits: config, grid, catalog, original 4x4x8 test asset, build toggle, local ghost, pointer raycast, quarter-turn rotation, overlap and map bounds, validity HUD, request/result remotes, authoritative placement, GUIDs, owner-checked demolition, charge/refund adapter.
+- BUILD-019: 19 server checks and actual two-client placement/ownership/refund test passed. Startup race fixed; temporary test scripts removed from Studio.
+- All BUILD tasks are REVIEW. Owner manual review remains pending. Materials use a temporary construction balance until Phase 4 inventory integration. Flat foundation only; persistence is planned later.
+- Phase 3 summary commit records completion; stop at phase boundary per working agreement. PRE-016 remains open independently.

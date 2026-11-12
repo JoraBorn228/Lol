@@ -111,3 +111,7 @@ Rojo использует `default.project.json`, CLI установлен ка�
 ## 11. Проверки
 
 Каждая задача проверяет только затронутый слой. Статический анализ и тесты добавляются, когда проект обзаведётся подходящими инструментами. Игровой запуск и мультиплеер нельзя объявлять проверенными без фактического запуска в Roblox Studio.
+
+## Phase 3 construction
+
+BuildService is authoritative for placement and demolition. Clients send template/position/quarter-turn or a BuildId; the server checks finite types, grid, map bounds, collision, reach, ownership and rate limits. Server-generated GUIDs identify objects. ConstructionBudget is a temporary session-only adapter until Phase 4 InventoryService exists; it owns costs/refunds. No client-supplied resource or owner values are used. Current geometry intentionally supports the flat foundation without stacking.
