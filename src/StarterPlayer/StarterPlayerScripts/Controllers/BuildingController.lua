@@ -57,5 +57,25 @@ function Controller.start()
 		return Enum.ContextActionResult.Sink
 	end, true, Enum.KeyCode.B)
 	ContextActionService:SetTitle("IndustriaBuildToggle", "Строить")
+	RunService.RenderStepped:Connect(function()
+		if not active or not preview then return end
+		local camera = workspace.CurrentCamera
+		local map = workspace:FindFirstChild("Map")
+		local ground = map and map:FindFirstChild("Baseplate")
+		if not camera or not ground then return end
+		local point = UserInputService:GetMouseLocation()
+		local ray = camera:ScreenPointToRay(point.X, point.Y)
+		local params = RaycastParams.new()
+		params.FilterType = Enum.RaycastFilterType.Include
+		params.FilterDescendantsInstances = { ground }
+		local hit = workspace:Raycast(ray.Origin, ray.Direction * 1000, params)
+		candidate = nil
+		valid = false
+		preview.Transparency = 1
+		if not hit then return end
+		candidate = CFrame.new(Grid.snapPosition(hit.Position, Config.GridSize, Config.GroundY + Catalog[selected].Size.Y / 2)) * Grid.rotation(turns)
+		preview.CFrame = candidate
+		preview.Transparency = Config.PreviewTransparency
+	end)
 end
 return Controller
