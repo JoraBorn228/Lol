@@ -57,6 +57,12 @@ function Controller.start()
 		return Enum.ContextActionResult.Sink
 	end, true, Enum.KeyCode.B)
 	ContextActionService:SetTitle("IndustriaBuildToggle", "Строить")
+	ContextActionService:BindAction("IndustriaBuildRotate", function(_, state)
+		if not active or UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+		if state == Enum.UserInputState.Begin then turns = (turns + 1) % 4 end
+		return Enum.ContextActionResult.Sink
+	end, true, Enum.KeyCode.R)
+	ContextActionService:SetTitle("IndustriaBuildRotate", "Поворот")
 	RunService.RenderStepped:Connect(function()
 		if not active or not preview then return end
 		local camera = workspace.CurrentCamera
