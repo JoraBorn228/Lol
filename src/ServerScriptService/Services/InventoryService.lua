@@ -30,4 +30,26 @@ function Inventory.start()
  Players.PlayerRemoving:Connect(function(player) states[player]=nil end)
  for _,player in Players:GetPlayers() do Inventory.ensure(player) end
 end
+function Inventory.transact(player, delta)
+ if typeof(delta)~="table" then return false,"Некорректная операция" end
+ Inventory.ensure(player)
+ local nextState=table.clone(states[player])
+ for id,amount in delta do
+  if typeof(id)~="string" or not Catalog[id] or typeof(amount)~="number" or amount~=amount or math.abs(amount)>Config.MaxTransaction or amount%1~=0 then return false,"Некорректный ресурс или количество" end
+  local value=(nextState[id] or 0)+amount
+  if value<0 then return false,"Недостаточно ресурсов" end
+  nextState[id]=value
+ end
+ local total=0
+ for _,amount in nextState do total+=amount end
+ if total>Config.Capacity then return false,"Инвентарь заполнен" end
+ states[player]=nextState
+ publish(player)
+ return true,"Готово"
+end
+function Inventory.add(player,id,amount)
+ if typeof(amount)~="number" or amount<=0 then return false,"Некорректное количество" end
+ if typeof(id)~="string" then return false,"Некорректный ресурс" end
+ return Inventory.transact(player,{[id]=amount})
+end
 return Inventory
