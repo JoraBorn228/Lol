@@ -12,5 +12,13 @@ function Engine.step(state,dt)
  end
  state.status="Working"
  state.progress=math.min(recipe.Duration,state.progress+dt)
+ if state.progress<recipe.Duration then return end
+ -- Commit a whole cycle synchronously; input remains available until completion.
+ if not Buffer.canApply(state.output,recipe.Outputs) then state.status="OutputFull";return end
+ local delta={};for id,amount in recipe.Inputs do delta[id]=-amount end
+ assert(Buffer.apply(state.input,delta),"Recipe input invariant failed")
+ assert(Buffer.apply(state.output,recipe.Outputs),"Recipe output invariant failed")
+ state.progress=0
+ state.status="Completed"
 end
 return Engine
