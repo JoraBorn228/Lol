@@ -6,6 +6,7 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local Config = require(ReplicatedStorage.Shared.Config.BuildingConfig)
 local Grid = require(ReplicatedStorage.Shared.Util.GridUtils)
+local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
 local Catalog = require(ReplicatedStorage.Shared.Config.BuildCatalog)
 local Controller = {}
 local active = false
@@ -82,6 +83,14 @@ function Controller.start()
 		candidate = CFrame.new(Grid.snapPosition(hit.Position, Config.GridSize, Config.GroundY + Catalog[selected].Size.Y / 2)) * Grid.rotation(turns)
 		preview.CFrame = candidate
 		preview.Transparency = Config.PreviewTransparency
+		local character = Players.LocalPlayer.Character
+		local root = character and character:FindFirstChild("HumanoidRootPart")
+		valid = root ~= nil and (root.Position - candidate.Position).Magnitude <= Config.MaxDistance
+			and Geometry.inBounds(candidate, Catalog[selected].Size) and Geometry.isClear(candidate, Catalog[selected].Size)
+		preview.Color = valid and Config.ValidColor or Config.InvalidColor
+		if status then
+			status.Text = (valid and "Можно поставить" or "Недопустимое место") .. " · R — поворот · клик — поставить · X — демонтаж · B — выход"
+		end
 	end)
 end
 return Controller
