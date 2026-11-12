@@ -70,6 +70,16 @@ function Controller.start()
 		return Enum.ContextActionResult.Sink
 	end, true, Enum.KeyCode.R)
 	ContextActionService:SetTitle("IndustriaBuildRotate", "Поворот")
+	ContextActionService:BindAction("IndustriaBuildRemove", function(_, state)
+		if not active or UserInputService:GetFocusedTextBox() then return Enum.ContextActionResult.Pass end
+		if state == Enum.UserInputState.Begin then
+			local target = Players.LocalPlayer:GetMouse().Target
+			local id = target and target:GetAttribute("BuildId")
+			if id then ReplicatedStorage.Remotes.BuildRequest:FireServer({ action = "Remove", buildId = id }) end
+		end
+		return Enum.ContextActionResult.Sink
+	end, true, Enum.KeyCode.X)
+	ContextActionService:SetTitle("IndustriaBuildRemove", "Снести")
 	RunService.RenderStepped:Connect(function()
 		if not active or not preview then return end
 		local camera = workspace.CurrentCamera

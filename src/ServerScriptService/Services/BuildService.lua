@@ -28,6 +28,22 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 	local now = os.clock()
 	if now - (lastRequest[player] or -math.huge) < Config.RequestInterval then return false, "Слишком часто" end
 	lastRequest[player] = now
+	if typeof(request) == "table" and request.action == "Remove" then
+		if typeof(request.buildId) ~= "string" or #request.buildId > 64 then return false, "Некорректный ID" end
+		local folder = workspace:FindFirstChild("Buildings")
+		local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+		local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+		if not folder or not root or not humanoid or humanoid.Health <= 0 then return false, "Объект недоступен" end
+		for _, object in folder:GetChildren() do
+			if object:GetAttribute("BuildId") == request.buildId then
+				if object:GetAttribute("OwnerUserId") ~= player.UserId then return false, "Чужая постройка" end
+				if (root.Position - object.Position).Magnitude > Config.MaxDistance then return false, "Слишком далеко" end
+				object:Destroy()
+				return true, "Демонтировано"
+			end
+		end
+		return false, "Объект не найден"
+	end
 	local ok, reason, cf = validate(player, request)
 	if not ok or not cf then return false, reason end
 	local folder = workspace:FindFirstChild("Buildings")
