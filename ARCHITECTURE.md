@@ -115,3 +115,11 @@ Rojo использует `default.project.json`, CLI установлен ка�
 ## Phase 3 construction
 
 BuildService is authoritative for placement and demolition. Clients send template/position/quarter-turn or a BuildId; the server checks finite types, grid, map bounds, collision, reach, ownership and rate limits. Server-generated GUIDs identify objects. ConstructionBudget is a temporary session-only adapter until Phase 4 InventoryService exists; it owns costs/refunds. No client-supplied resource or owner values are used. Current geometry intentionally supports the flat foundation without stacking.
+
+## Phase 4–5 inventory and production implementation
+
+InventoryService is the sole server-owned per-player quantity store, with finite integer transaction validation, total capacity and all-or-nothing deltas. Replicated Inventory folder attributes are presentation only; no remote exposes arbitrary resource mutation. ConstructionBudget delegates to InventoryService.
+
+ItemBuffer stores bounded machine contents. ProductionEngine consumes a complete recipe batch only when the entire output fits; a non-yielding completion publishes output exactly once. Progress pauses when disabled, underfed or blocked. ProductionService runs one Heartbeat dispatcher, capped at 1200 machines, and replicates status/progress/buffer snapshots. No machine owns a polling coroutine.
+
+MachineService registers placed assets by TemplateId and BuildId, validates nearby living owners and request rate, transfers a recipe batch from inventory into input and all output back into inventory. Recipe changes require an empty machine. Demolition refunds both buffers and construction cost atomically before destruction. The current catalog has a single generic TestMachine; dedicated machines, energy, conveyors and persistence are later work.

@@ -39,3 +39,11 @@
 - Phase 3 summary commit records completion; stop at phase boundary per working agreement. PRE-016 remains open independently.
 
 Phase 4 complete: ITEM-001–012 implemented and committed; authoritative session inventory, four raw resources, inventory HUD, construction adapter and 18 successful assertions. No persistence yet. Owner review pending.
+
+## 2026-11-13 — Phase 5 production complete
+
+- PROD-001–014 implemented and committed individually: recipes, machine config, bounded input/output buffers, pure production engine, one shared dispatcher, lifecycle registration, input checks, progress, atomic completion, replicated output, backpressure and machine UI.
+- Inventory is the sole resource authority; ConstructionBudget is now only a compatibility adapter. Machine loading/collection and demolition refunds use atomic inventory transactions.
+- Three recipes run on the existing TestMachine placeholder. Dedicated machine models remain Phase 6. Electricity is not required until its later phase.
+- 73 regression assertions passed plus actual two-client production/ownership/refund QA. No project startup errors observed. Owner review remains pending; no saving yet. PRE-016 remains open.
+- Both requested phases completed. Stop at the end of Phase 5; Phase 6 not started.
