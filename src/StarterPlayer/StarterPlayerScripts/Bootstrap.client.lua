@@ -14,4 +14,8 @@ while remotes:GetAttribute("ServerReady") ~= true and os.clock() < deadline do
 end
 assert(remotes:GetAttribute("ServerReady") == true, "Server readiness timed out")
 Logger.info("Client", "Bootstrap online.")
-require(script.Parent.Controllers.BuildingController).start()
+local controllers = script.Parent:WaitForChild("Controllers", Config.StartupTimeoutSeconds)
+assert(controllers, "Client controllers missing")
+local building = controllers:WaitForChild("BuildingController", Config.StartupTimeoutSeconds)
+assert(building, "Building controller missing")
+require(building).start()

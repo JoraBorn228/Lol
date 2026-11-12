@@ -52,3 +52,14 @@ Live sync не подтверждён: тестовое окно Studio откр
 - Poly Haven, Sketchfab, Poly Pizza and paid generators are off. They are optional and were not activated or used.
 - Git CLI, authenticated origin push (previously verified), filesystem, Rojo 7.7.1 build work. No cloud game publishing was performed.
 - PRE-016 is still pending plugin Connect. A working Studio MCP connection is independent of Rojo synchronization.
+
+## 2026-11-12 — Phase 3 verification
+
+- Rojo build generated INDUSTRIA-Phase3.rbxlx. Actual Play exposed a client startup race (Controllers was not yet copied into PlayerScripts); bounded WaitForChild fixed it. Second launch loaded BuildingHUD successfully.
+- Client BuildRequest placed a rotated TestMachine; server building and BuildId replicated to client. Removal through the same remote removed the exact test object.
+- tests/Phase3.server.lua: 19 assertions passed, using two synthetic actors in one real client session. Covered negative snapping, NaN/infinity, unknown template, invalid rotation, off-grid/out-of-range requests, overlap, ownership, duplicate refunds and rate limiting.
+- tests/Phase3.multiplayer.server.lua and .client.lua: ExecuteMultiplayerTestAsync(2, {phase3=true}) returned passed=true, realClients=2, ownership=true, replication=true, refunds=true. Two real simulated clients placed distinct GUID objects, rejected foreign removal, removed their own objects, and each finished with 20 construction units. Temporary harnesses were removed from the edit scene after the run; tests are outside src and excluded from normal builds.
+- Official API: https://create.roblox.com/docs/reference/engine/classes/StudioTestService
+- Manual owner checks: B toggles mode; pointer follows ground; R rotates rectangular footprint; green/red preview agrees with allowed/blocked placement; click places; X removes; HUD reports cost/refund. Check touch controls separately; a full mobile build UI is outside this phase.
+- Construction budget is a session-only adapter starting at 20 units, not the Phase 4 item inventory. Buildings and budget are not persistent yet. Placement currently supports the flat Phase 1 foundation only, with no stacking or arbitrary terrain placement.
+- PRE-016 Rojo live sync is still unverified. Final code was built with Rojo; client startup fix was transferred to the isolated Studio scene through MCP before tests.
