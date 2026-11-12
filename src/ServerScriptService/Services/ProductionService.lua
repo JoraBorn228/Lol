@@ -2,6 +2,8 @@
 local RunService=game:GetService("RunService")
 local Config=require(game:GetService("ReplicatedStorage").Shared.Config.MachineConfig)
 local Engine=require(script.Parent.ProductionEngine)
+local Buffer=require(script.Parent.ItemBuffer)
+local HttpService=game:GetService("HttpService")
 local Service={}
 local machines={}
 local started=false
@@ -25,8 +27,10 @@ function Service.start()
    object:SetAttribute("ProductionStatus",state.status)
    object:SetAttribute("ProductionProgress",state.progress)
    object:SetAttribute("RecipeId",state.recipeId)
-   object:SetAttribute("InputTotal",require(script.Parent.ItemBuffer).total(state.input))
-   object:SetAttribute("OutputTotal",require(script.Parent.ItemBuffer).total(state.output))
+   object:SetAttribute("InputTotal",Buffer.total(state.input))
+   object:SetAttribute("OutputTotal",Buffer.total(state.output))
+   object:SetAttribute("InputItems",HttpService:JSONEncode(state.input.items))
+   object:SetAttribute("OutputItems",HttpService:JSONEncode(state.output.items))
   end
  end)
 end
