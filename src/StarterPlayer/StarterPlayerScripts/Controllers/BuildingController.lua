@@ -21,6 +21,17 @@ local function setActive(value: boolean)
 	candidate = nil
 	valid = false
 	if preview then preview:Destroy(); preview = nil end
+	if active then
+		local ghost = ReplicatedStorage.Assets[Catalog[selected].TemplateName]:Clone()
+		ghost.Name = "BuildingPreview"
+		ghost.Anchored = true
+		ghost.CanCollide = false
+		ghost.CanTouch = false
+		ghost.CanQuery = false
+		ghost.Transparency = 1
+		ghost.Parent = workspace
+		preview = ghost
+	end
 	if status then status.Text = active and "Строительство: R — поворот · клик — поставить" or "B — строительство" end
 end
 function Controller.start()
