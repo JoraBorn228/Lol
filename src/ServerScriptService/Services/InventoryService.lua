@@ -52,4 +52,9 @@ function Inventory.add(player,id,amount)
  if typeof(id)~="string" then return false,"Некорректный ресурс" end
  return Inventory.transact(player,{[id]=amount})
 end
+function Inventory.remove(player,id,amount)
+ if typeof(amount)~="number" or amount<=0 then return false,"Некорректное количество" end
+ if typeof(id)~="string" then return false,"Некорректный ресурс" end
+ return Inventory.transact(player,{[id]=-amount})
+end
 return Inventory
