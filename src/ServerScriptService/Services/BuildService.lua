@@ -7,6 +7,7 @@ local Catalog = require(ReplicatedStorage.Shared.Config.BuildCatalog)
 local Grid = require(ReplicatedStorage.Shared.Util.GridUtils)
 local Geometry = require(ReplicatedStorage.Shared.Util.BuildGeometry)
 local Budget = require(script.Parent.ConstructionBudget)
+local MachineService = require(script.Parent.MachineService)
 local BuildService = {}
 local lastRequest: {[Player]: number} = {}
 local started = false
@@ -40,7 +41,7 @@ function BuildService.handle(player: Player, request: any): (boolean, string)
 				if object:GetAttribute("OwnerUserId") ~= player.UserId then return false, "Чужая постройка" end
 				if (root.Position - object.Position).Magnitude > Config.MaxDistance then return false, "Слишком далеко" end
 				local paid = object:GetAttribute("PaidCost") or 0
-				local refunded,reason=Budget.refund(player,paid)
+				local refunded,reason=MachineService.refundForRemoval(player,object,paid)
 				if not refunded then return false,reason end
 				object:Destroy()
 				return true, "Демонтировано"
