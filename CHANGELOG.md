@@ -49,3 +49,13 @@ Phase 4 complete: ITEM-001–012 implemented and committed; authoritative sessio
 - Both requested phases completed. Stop at the end of Phase 5; Phase 6 not started.
 
 2026-11-13: fixed inventory opening priority; added visible Inventory [I] and close buttons, verified real keyboard and mouse interactions in Studio.
+
+## 2026-11-13 — Phase 6 complete; owner-requested stop
+
+- MACH-001–005: five original Blender machine sources, primitive shape specifications and matching anchored Roblox composite assets.
+- MACH-006: Input/Output/Power ports, safe composite transform/preview helper, model selection with T or button.
+- MACH-007–008: authoritative finite iron nodes, centered extractor binding and depletion-safe mining.
+- MACH-009–013: separate smelter/constructor/assembler recipe lists and ingot/plate/rod/wire/reinforced-part chains.
+- MACH-014: operating-state lamps, nearby labels, exhausted/deposit/power-pending states.
+- MACH-015: 495 assertions including regression; actual client full production chain passed and five machine silhouettes inspected.
+- Every task committed separately. All MACH tasks remain REVIEW. Owner explicitly requested to finish this phase and stop; Phase 7 not started. Generator energy and conveyor transport remain future work. PRE-016 remains open.

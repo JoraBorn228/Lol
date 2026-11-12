@@ -123,3 +123,9 @@ InventoryService is the sole server-owned per-player quantity store, with finite
 ItemBuffer stores bounded machine contents. ProductionEngine consumes a complete recipe batch only when the entire output fits; a non-yielding completion publishes output exactly once. Progress pauses when disabled, underfed or blocked. ProductionService runs one Heartbeat dispatcher, capped at 1200 machines, and replicates status/progress/buffer snapshots. No machine owns a polling coroutine.
 
 MachineService registers placed assets by TemplateId and BuildId, validates nearby living owners and request rate, transfers a recipe batch from inventory into input and all output back into inventory. Recipe changes require an empty machine. Demolition refunds both buffers and construction cost atomically before destruction. The current catalog has a single generic TestMachine; dedicated machines, energy, conveyors and persistence are later work.
+
+## Phase 6 machine assets and extraction
+
+Each machine asset uses an invisible anchored BasePart as a bounded collision/interaction root with noncolliding decorative Parts. MachineAsset.pivot preserves every child transform; previews disable query/collision on the full subtree. Attachments define input/output/power port orientation for later phases. JSON primitive specifications and .blend libraries are committed as authoring sources.
+
+ResourceService creates finite server-owned nodes. BuildService checks extractor placement against node centers, and MachineService binds the server node instance. ProductionEngine deducts node stock only at an atomic output completion, preserving stock when blocked. Missing/exhausted nodes stop production. Generator remains PowerPending until Phase 8. Dedicated machine configurations limit available recipes, while PrototypePlate remains confined to TestMachine for compatibility.
