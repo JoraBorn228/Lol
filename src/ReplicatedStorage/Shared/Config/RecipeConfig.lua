@@ -1,5 +1,6 @@
 --!strict
 return table.freeze({
+ IronRod=table.freeze({Name="Железный стержень",Duration=2,Inputs=table.freeze({IronIngot=1}),Outputs=table.freeze({IronRod=1})}),
  SmeltIron=table.freeze({Name="Железный слиток",Duration=2,Inputs=table.freeze({IronOre=2}),Outputs=table.freeze({IronIngot=1})}),
  SmeltCopper=table.freeze({Name="Медный слиток",Duration=2,Inputs=table.freeze({CopperOre=2}),Outputs=table.freeze({CopperIngot=1})}),
  MineIron=table.freeze({Name="Добыча железа",Duration=2,Inputs=table.freeze({}),Outputs=table.freeze({IronOre=1})}),
